@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Complete</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Download Completed!</h1>
+        <p>Your video "{{ title }}" has been successfully downloaded.</p>
+        <img src="{{ thumbnail }}" alt="Thumbnail" class="thumbnail">
+        <p><a href="/" class="button">Back to Home</a></p>
+    </div>
+</body>
+
+</html>

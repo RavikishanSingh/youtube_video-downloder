@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Format</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <img src="{{ thumbnail }}" alt="Thumbnail" class="thumbnail">
+        <form id="downloadForm" action="/download_complete" method="POST">
+            <input type="hidden" id="url" name="url" value="{{ url }}">
+            <div class="formats">
+                <label for="format_id">Select Format:</label>
+                <select name="format_id" id="format_id">
+                    {% for format in formats %}
+                    <option value="{{ format.format_id }}">{{ format.quality }} - {{ format.file_size_mb }} MB</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" onclick="showPleaseWaitMessage()">Download</button>
+        </form>
+        <!-- Please wait message -->
+        <div id="pleaseWaitMessage">
+            wait for a while.. <span id="progressInfo">Initializing...</span>
+        </div>
+    </div>
+    <script>
+        function showPleaseWaitMessage() {
+            // Hide the download form and show the please wait message
+            document.getElementById('downloadForm').style.display = 'none';
+            document.getElementById('pleaseWaitMessage').style.display = 'block';
+
+            // Make an AJAX request to get live download progress updates
+            var eventSource = new EventSource("/progress");
+            eventSource.onmessage = function (event) {
+                document.getElementById("progressInfo").innerText = event.data;
+            };
+        }
+    </script>
+</body>
+
+</html>
